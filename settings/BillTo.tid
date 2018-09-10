@@ -1,0 +1,161 @@
+caption: Bill To
+section_name: Bill To
+tags:
+title: $:/plugins/OokTech/InvoiceCreator/settings/tabs/BillTo
+type: text/vnd.tiddlywiki
+
+\define CustomerTiddlerName() $:/data/CustomerInfo/$(CustomerName)$
+
+\define thisSelectedOption() $:/data/Invoice/$(ThisInvoice)$##bill_to
+
+<$vars
+    ThisInvoice={{$:/settings/Global!!selected_invoice}}
+>
+    <$tiddler
+        tiddler=<<InvoiceDataTiddler>>
+    >
+        ''Select Customer:''
+        <$select
+            tiddler=<<currentTiddler>>
+            index='bill_to'
+        >
+            <option
+                value=''
+            >
+                //Add New Customer//
+            </option>
+            <$list
+                filter='[prefix[$:/data/CustomerInfo/]]'
+            >
+                <option
+                    value=<<currentTiddler>>
+                >
+                    <$view
+                        field='name'
+                    >
+                        <$view
+                            field='title'
+                        />
+                    </$view>
+                </option>
+            </$list>
+        </$select>
+    </$tiddler>
+
+    <$reveal
+        state=<<thisSelectedOption>>
+        type='nomatch'
+        text=''
+    >
+        <$list
+            filter='[[$:/data/Invoice/]addsuffix{$:/settings/Global!!selected_invoice}getindex[bill_to]]'
+        >
+            <h2>__Customer Address__</h2>
+            <div
+                style='border:solid black; background:white;padding:2em'
+            >
+                ''{{!!name}}''<br>
+                {{!!address}},<br>
+                {{!!city}}, {{!!state}} {{!!zip_code}}
+            </div>
+        </$list>
+    </$reveal>
+    <$reveal
+        state=<<thisSelectedOption>>
+        type='match'
+        text=''
+    >
+        <h2>Enter Customer Information</h2>
+        <$tiddler
+            tiddler='$:/temp/NewCustomer'
+        >
+            <table
+                style='width:100%'
+            >
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                    <td>
+                        <$edit-text
+                            field=name
+                            class=tc-edit-texteditor
+                        />
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Address
+                    </th>
+                    <td>
+                        <$edit-text
+                            field=address
+                            class=tc-edit-texteditor
+                        />
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        City
+                    </th>
+                    <td>
+                        <$edit-text
+                            field=city
+                            class=tc-edit-texteditor
+                        />
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        State
+                    </th>
+                    <td>
+                        <$edit-text
+                            field=state
+                            class=tc-edit-texteditor
+                        />
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Zip Code
+                    </th>
+                    <td>
+                        <$edit-text
+                            field=zip_code
+                            class=tc-edit-texteditor
+                        />
+                    </td>
+                </tr>
+            </table>
+            <$set
+                name=CustomerName
+                value={{!!name}}
+            >
+                <$button>
+                    Add Customer
+                    <$action-setfield
+                        $tiddler=<<CustomerTiddlerName>>
+                        name={{!!name}}
+                        address={{!!address}}
+                        city={{!!city}}
+                        state={{!!state}}
+                        zip_code={{!!zip_code}}
+                    />
+                    <$action-setfield
+                        name=''
+                        address=''
+                        city=''
+                        state=''
+                        zip_code=''
+                    />
+                    <$action-setfield
+                        $tiddler=<<InvoiceDataTiddler>>
+                        $index=bill_to
+                        $value=<<CustomerTiddlerName>>
+                    />
+                </$button>
+            </$set>
+        </$tiddler>
+    </$reveal>
+</$vars>

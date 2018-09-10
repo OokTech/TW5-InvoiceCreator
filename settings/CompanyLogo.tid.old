@@ -1,0 +1,45 @@
+caption: Company Logo
+section_name: Company Logo
+tags:
+title: $:/plugins/OokTech/InvoiceCreator/settings/tabs/CompanyLogo
+type: text/vnd.tiddlywiki
+
+<$vars
+    ThisInvoice={{$:/settings/Global!!selected_invoice}}
+>
+    <$list
+        filter='[[$:/data/]addsuffix<ThisInvoice>addsuffix[/CompanyName]]'
+    >
+        <div
+            style='height:105px;border:solid black'
+        >
+            <$select
+                field='logo'
+            >
+                <option
+                    value=''
+                >
+                    --
+                </option>
+                <$list
+                    filter='[type[image/png]][type[image/jpg]]'
+                >
+                    <option>
+                        <$view
+                            field='title'
+                        />
+                    </option>
+                </$list>
+            </$select>
+            <div
+                style='float:right;position:relative;'
+            >
+                <$image
+                    source={{!!logo}}
+                    width=100
+                    height=100
+                />
+            </div>
+        </div>
+    </$list>
+<$vars>

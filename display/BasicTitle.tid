@@ -1,0 +1,57 @@
+tags: [[Section Display]]
+section_name: Basic Title
+title: $:/plugins/OokTech/InvoiceCreator/display/BasicTitle
+type: text/vnd.tiddlywiki
+
+<$vars
+    ThisInvoice={{$:/settings/Global!!selected_invoice}}
+>
+    <$list
+        filter='[[$:/data/Invoice/]addsuffix<ThisInvoice>]'
+    >
+        <h1>
+            <$view
+                index=invoice_title
+            />
+            <span
+                style='float:right;'
+            >
+                <$view
+                    index=invoice_number
+                />
+            </span>
+        </h1>
+    </$list>
+<$vars>
+
+<$vars
+    ThisInvoice={{$:/settings/Global!!selected_invoice}}
+>
+    <$list
+        filter='[[$:/data/Invoice/]addsuffix<ThisInvoice>]'
+    >
+       ''Project Title'':
+       <$view
+            index='project_title'
+        />
+    </$list>
+</$vars>
+
+<$vars
+    ThisInvoice={{$:/settings/Global!!selected_invoice}}
+>
+    <$list
+        filter='[[$:/data/Invoice/]addsuffix<ThisInvoice>]'
+    >
+        ''Invoice Date:''
+        <$view
+            index='day'
+        />
+        <$view
+            index='month'
+        />
+        <$view
+            index='year'
+        />
+    </$list>
+</$vars>

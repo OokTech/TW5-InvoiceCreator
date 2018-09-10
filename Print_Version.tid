@@ -1,0 +1,34 @@
+caption: Preview
+title: $:/plugins/OokTech/InvoiceCreator/Print Version
+type: text/vnd.tiddlywiki
+
+\define thisMakePreview()
+<$list
+    filter="""[list[$:/data/Invoice/$(ThisInvoice)$##section_order]]"""
+    variable=ThisSection
+>
+    <$transclude
+        tiddler=<<ThisSection>>
+        mode=block
+    />
+</$list>
+\end
+
+<$vars
+    ThisInvoice={{$:/settings/Global!!selected_invoice}}
+>
+    <$list filter='[[$:/data/Invoice/]addsuffix<ThisInvoice>getindex[page_size]prefix[Letter]]'>
+        <div
+            style='width:8.5in;height:11in;background-color:white;color:black;'
+        >
+            <<thisMakePreview>>
+        </div>
+    </$list>
+    <$list filter='[[$:/data/Invoice/]addsuffix<ThisInvoice>getindex[page_size]prefix[A4]][[$:/data/Invoice/]addsuffix<ThisInvoice>getindex[page_size]!prefix[Letter]]+[limit[1]]'>
+        <div
+            style='width:21cm;height:29.7cm;margin-left:20px;background-color:white;color:black'
+        >
+            <<thisMakePreview>>
+        </div>
+    </$list>
+</$vars>

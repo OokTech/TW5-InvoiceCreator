@@ -1,0 +1,125 @@
+caption: Itemized list
+section_name: Itemized List
+tags:
+title: $:/plugins/OokTech/InvoiceCreator/settings/tabs/ItemizedList
+type: text/vnd.tiddlywiki
+
+\define thisSelectButton()
+<$set
+    name=CurrentItem
+    filter='[[$:/settings/Global]get[selected_invoice]]'
+>
+    <$list
+        filter='[<InvoiceItemName>field:use[true]]'
+        variable=dummy
+        emptyMessage="""
+        <$button
+            class='tc-btn-invisible'
+            style='width:1.5em'
+        >
+            <input
+                type='checkbox'
+            />
+            <$action-setfield
+                $tiddler=<<InvoiceItemName>>
+                tags='[[Invoice Item Data]]'
+                use=true
+            />
+        </$button>"""
+    >
+        <$button
+            class='tc-btn-invisible'
+            style='width:1.5em'
+        >
+            <input
+                type='checkbox'
+                checked=true
+            />
+            <$action-setfield
+                $tiddler=<<InvoiceItemName>>
+                use=false
+            />
+        </$button>
+    </$list>
+</$set>
+\end
+
+<table
+    style='width:100%'
+>
+    <tr>
+        <th>
+        </th>
+        <th
+            style='width:50%'
+        >
+            Name
+        </th>
+        <th>
+            Quantity
+        </th>
+        <th>
+            Unit Price
+        </th>
+        <th>
+            Total
+        </th>
+    </tr>
+    <$list
+        filter='[tag[Invoice Item]]'
+    >
+        <$list
+            variable=InvoiceItemName
+            filter='[<currentTiddler>addsuffix[ - ]addsuffix{$:/settings/Global!!selected_invoice}]'
+        >
+            <tr>
+                <td>
+                    <<thisSelectButton>>
+                </td>
+                <td>
+                    <<currentTiddler>>
+                </td>
+                <td>
+                    <$edit-text
+                        tiddler=<<InvoiceItemName>>
+                        field='quantity'
+                        class='tc-edit-texteditor'
+                    />
+                </td>
+                <td>
+                    <$edit-text
+                        tiddler=<<InvoiceItemName>>
+                        field='unit_price'
+                        class='tc-edit-texteditor'
+                    />
+                </td>
+                <td>
+                    <$view
+                        tiddler=<<InvoiceItemName>>
+                        field='total'
+                    />
+                </td>
+            </tr>
+        </$list>
+    </$list>
+</table>
+
+New Item:
+
+<$edit-text
+    tiddler='$:/temp/InvoiceCreator/NewInvoiceItem'
+    field=description
+/>
+
+<$button>
+    Add Item
+    <$action-setfield
+        $tiddler={{$:/temp/InvoiceCreator/NewInvoiceItem!!description}}
+        tags="[[Invoice Item]]"
+        description={{$:/temp/InvoiceCreator/NewInvoiceItem!!description}}
+    />
+    <$action-setfield
+        $tiddler='$:/temp/InvoiceCreator/NewInvoiceItem'
+        description=''
+    />
+</$button>

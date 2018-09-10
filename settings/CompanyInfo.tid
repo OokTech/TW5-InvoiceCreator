@@ -1,0 +1,356 @@
+caption: Company Information
+section_name: Company Information
+tags:
+title: $:/plugins/OokTech/InvoiceCreator/settings/tabs/CompanyInfo
+type: text/vnd.tiddlywiki
+
+\define SelectBankAccount()
+<$select
+    tiddler="""$:/data/Invoice/$(ThisInvoice)$"""
+    index=payment_info
+>
+    <option
+        value=''
+    >
+        //New Account//
+    </option>
+    <$list
+        filter='[prefix[$:/data/AccountInfo/]]'
+    >
+        <option
+            value=<<currentTiddler>>
+        >
+            <$view
+                field='account_name'
+            />
+        </option>
+    </$list>
+</$select>
+<$reveal
+    type='match'
+    state="""$:/data/Invoice/$(ThisInvoice)$##payment_info"""
+    text=''
+>
+    <$list
+        filter='[[$:/data/AccountInfo/]addsuffix{$:/temp/NewAccountInfo!!account_name}]'
+        variable=thisAccountTiddler
+    >
+        <$button>
+            Save Account
+            <$action-setfield
+                $tiddler=<<thisAccountTiddler>>
+                account_name={{$:/temp/NewAccountInfo!!account_name}}
+                bank={{$:/temp/NewAccountInfo!!bank}}
+                account_number={{$:/temp/NewAccountInfo!!account_number}}
+                routing_number={{$:/temp/NewAccountInfo!!routing_number}}
+            />
+            <$action-setfield
+                $tiddler='$:/temp/NewAccountInfo'
+                account_name=''
+                bank=''
+                account_number=''
+                routing_number=''
+            />
+            <$action-setfield
+                $tiddler=<<InvoiceDataTiddler>>
+                $index=payment_info
+                $value=<<thisAccountTiddler>>
+            />
+        </$button>
+    </$list>
+</$reveal>
+\end
+
+\define SelectCompanyAddress()
+<$select
+    tiddler="""$:/data/Invoice/$(ThisInvoice)$"""
+    index=company_address
+>
+    <option
+        value=''
+    >
+        //New Company//
+    </option>
+    <$list
+        filter='[prefix[$:/data/CompanyInfo/]]'
+    >
+        <option
+            value=<<currentTiddler>>
+        >
+            <$view
+                field='company_name'
+            />
+        </option>
+    </$list>
+</$select>
+<$reveal
+    type='match'
+    state="""$:/data/Invoice/$(ThisInvoice)$##company_address"""
+    text=''
+>
+    <$list
+        filter='[[$:/data/CompanyInfo/]addsuffix{$:/temp/NewCompanyAddress!!company_name}]'
+        variable=thisCompanyTiddler
+    >
+        <$button>
+            Save Company
+            <$action-setfield
+                $tiddler=<<thisCompanyTiddler>>
+                company_name={{$:/temp/NewCompanyAddress!!company_name}}
+                street_address={{$:/temp/NewCompanyAddress!!street_address}}
+                city={{$:/temp/NewCompanyAddress!!city}}
+                state={{$:/temp/NewCompanyAddress!!state}}
+                zip_code={{$:/temp/NewCompanyAddress!!zip_code}}
+                ein={{$:/temp/NewCompanyAddress!!ein}}
+                logo={{$:/temp/NewCompanyAddress!!logo}}
+            />
+            <$action-setfield
+                $tiddler='$:/temp/NewCompanyAddress'
+                company_name=''
+                street_address=''
+                city=''
+                state=''
+                zip_code=''
+                ein=''
+                logo=''
+            />
+            <$action-setfield
+                $tiddler=<<InvoiceDataTiddler>>
+                $index=company_address
+                $value=<<thisCompanyTiddler>>
+            />
+        </$button>
+    </$list>
+</$reveal>
+\end
+
+<$vars
+    ThisInvoice={{$:/settings/Global!!selected_invoice}}
+>
+    <table
+        style='width:100%;'
+    >
+        <$list
+            filter='[[$:/data/Invoice/]addsuffix<ThisInvoice>getindex[company_address]][[Just some empty tiddler title thingy 1234567890987654321]]+[limit[1]]'
+        >
+            <tr>
+                <th
+                    colspan=2
+                    style='border:solid black'
+                >
+                    Company Address <<SelectCompanyAddress>>
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    Company Name
+                </th>
+                <td>
+                    <$view
+                        field=company_name
+                    >
+                        <$edit-text
+                            tiddler='$:/temp/NewCompanyAddress'
+                            field='company_name'
+                            class='tc-edit-texteditor'
+                        />
+                    </$view>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Street Address
+                </th>
+                <td>
+                    <$view
+                        field=street_address
+                    >
+                        <$edit-text
+                            tiddler='$:/temp/NewCompanyAddress'
+                            field='street_address'
+                            class='tc-edit-texteditor'
+                        />
+                    </$view>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    City
+                </th>
+                <td>
+                    <$view
+                        field=city
+                    >
+                        <$edit-text
+                            tiddler='$:/temp/NewCompanyAddress'
+                            field='city'
+                            class='tc-edit-texteditor'
+                        />
+                    </$view>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    State
+                </th>
+                <td>
+                    <$view
+                        field=state
+                    >
+                        <$edit-text
+                            tiddler='$:/temp/NewCompanyAddress'
+                            field='state'
+                            class='tc-edit-texteditor'
+                        />
+                    </$view>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Zip Code
+                </th>
+                <td>
+                    <$view
+                        field=zip_code
+                    >
+                        <$edit-text
+                            tiddler='$:/temp/NewCompanyAddress'
+                            field='zip_code'
+                            class='tc-edit-texteditor'
+                        />
+                    </$view>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Logo
+                </th>
+                <td>
+                    <$view
+                        field='logo'
+                    >
+                        <$select
+                            tiddler='$:/temp/NewCompanyAddress'
+                            field='logo'
+                        >
+                            <option
+                                value=''
+                            >
+                                --
+                            </option>
+                            <$list
+                                filter='[type[image/png]][type[image/jpg]][type[image/svg+xml]]'
+                            >
+                                <option>
+                                    <$view
+                                        field='title'
+                                    />
+                                </option>
+                            </$list>
+                        </$select>
+                    </$view>
+                </td>
+            </tr>
+            <tr>
+                <th
+                    colspan=2
+                    style='border:solid black'
+                >
+                    Company Tax Information
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    EIN
+                </th>
+                <td>
+                    <$view
+                        field='ein'
+                    >
+                        <$edit-text
+                            tiddler='$:/temp/NewCompanyAddress'
+                            field=ein
+                            class='tc-edit-texteditor'
+                        />
+                    </$view>
+                </td>
+            </tr>
+        </$list>
+        <$list
+            filter='[[$:/data/Invoice/]addsuffix<ThisInvoice>getindex[payment_info]][[bolah aeosunhtaeueoea auoeaueoa uao eaouaoeuao]]+[limit[1]]'
+        >
+            <tr>
+                <th
+                    colspan=2
+                    style='border:solid black'
+                >
+                    Bank Information <<SelectBankAccount>>
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    Account Name
+                </th>
+                <td>
+                    <$view
+                        field='account_name'
+                    >
+                        <$edit-text
+                            tiddler='$:/temp/NewAccountInfo'
+                            field=account_name
+                            class='tc-edit-texteditor'
+                        />
+                    </$view>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Bank
+                </th>
+                <td>
+                    <$view
+                        field='bank'
+                    >
+                        <$edit-text
+                            tiddler='$:/temp/NewAccountInfo'
+                            field=bank
+                            class='tc-edit-texteditor'
+                        />
+                    </$view>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Account Number
+                </th>
+                <td>
+                    <$view
+                        field='account_number'
+                    >
+                        <$edit-text
+                            tiddler='$:/temp/NewAccountInfo'
+                            field=account_number
+                            class='tc-edit-texteditor'
+                        />
+                    </$view>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Routing Number
+                </th>
+                <td>
+                    <$view
+                        field='routing_number'
+                    >
+                        <$edit-text
+                            tiddler='$:/temp/NewAccountInfo'
+                            field=routing_number
+                            class='tc-edit-texteditor'
+                        />
+                    </$view>
+                </td>
+            </tr>
+        </$list>
+    </table>
+<$vars>

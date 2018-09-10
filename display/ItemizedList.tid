@@ -1,0 +1,45 @@
+tags: [[Section Display]]
+section_name: Itemized List
+title: $:/plugins/OokTech/InvoiceCreator/display/ItemizedList
+type: text/vnd.tiddlywiki
+
+<table style='width:100%'>
+    <tr>
+        <th>
+            QTY
+        </th>
+        <th>
+            Description
+        </th>
+        <th>
+            Unit Price (<<CurrencyUnit>>)
+        </th>
+        <th>
+            Item Total (<<CurrencyUnit>>)
+        </th>
+    </tr>
+    <$list
+        filter='[tag[Invoice Item Data]suffix{$:/settings/Global!!selected_invoice}use[true]]'
+    >
+        <tr>
+            <td>
+                {{!!quantity}}
+            </td>
+            <td>
+                <$list
+                    filter='[<currentTiddler>removesuffix{$:/settings/Global!!selected_invoice}removesuffix[ - ]]'
+                >
+                    <$view
+                        field='description'
+                    />
+                </$list>
+            </td>
+            <td>
+                {{!!unit_price}}
+            </td>
+            <td>
+                {{!!total}}
+            </td>
+        </tr>
+    </$list>
+</table>

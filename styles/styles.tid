@@ -1,0 +1,19 @@
+title: $:/plugins/OokTech/InvoiceCreator/styles
+tags: $:/tags/Stylesheet
+
+.preview-div-reorder {
+    width:100%;
+}
+
+.preview-div-reorder:hover {
+    border:solid red 1px;
+}
+
+.preview-div-reorder:hover .preview-div-reorder-inner {
+    display:block;
+}
+
+.preview-div-reorder-inner {
+    display:none;
+    border: solid black;
+}

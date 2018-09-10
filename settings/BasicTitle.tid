@@ -1,0 +1,164 @@
+caption: Basic Title
+section_name: Basic Title
+tags:
+title: $:/plugins/OokTech/InvoiceCreator/settings/tabs/BasicTitle
+type: text/vnd.tiddlywiki
+
+<$vars
+    ThisInvoice={{$:/settings/Global!!selected_invoice}}
+>
+    <$tiddler
+        tiddler=<<InvoiceDataTiddler>>
+    >
+        <table
+            style='width:100%'
+        >
+            <tr>
+                <th
+                    colspan=2
+                    style='background-color:darkgrey'
+                >
+                    Title
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    Label
+                </th>
+                <td>
+                    <$edit-text
+                        tag=input
+                        index='invoice_title'
+                        class='tc-edit-texteditor'
+                    />
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Invoice Number
+                </th>
+                <td>
+                    <$edit-text
+                        tag=input
+                        index='invoice_number'
+                        class='tc-edit-texteditor'
+                    />
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Project Title
+                </th>
+                <td>
+                    <$edit-text
+                        tag=input
+                        index='project_title'
+                        class='tc-edit-texteditor'
+                    />
+                </td>
+            </tr>
+            <tr>
+                <th
+                    colspan=2
+                    style='background:darkgrey'
+                >
+                    Date
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    Day
+                </th>
+                <td>
+                    <$edit-text
+                        tag=input
+                        index='day'
+                        class='tc-edit-texteditor'
+                    />
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Month
+                </th>
+                <td>
+                    <$edit-text
+                        tag=input
+                        index='month'
+                        class='tc-edit-texteditor'
+                    />
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Year
+                </th>
+                <td>
+                    <$edit-text
+                        tag=input
+                        index='year'
+                        class='tc-edit-texteditor'
+                    />
+                </td>
+            </tr>
+        </table>
+        <$button>
+            Use Current Date
+            <$action-setfield
+                $index=day
+                $value=<<now DD>>
+            />
+            <$action-setfield
+                $index=month
+                $value=<<now MMM>>
+            />
+            <$action-setfield
+                $index=year
+                $value=<<now YYYY>>
+            />
+        </$button>
+        <h2>
+            __Displayed Title__
+        </h2>
+        <div
+            style='border:solid black; background:white;padding-left:2em;padding-right:2em;'
+        >
+            <h1>
+                <$view
+                    index=invoice_title
+                />
+                <span
+                    style='float:right;'
+                >
+                    <$view
+                        index=invoice_number
+                    />
+                </span>
+            </h1>
+
+            <$vars
+                ThisInvoice={{$:/settings/Global!!selected_invoice}}
+            >
+                ''Project Title'':
+                <$view
+                    index='project_title'
+                />
+            </$vars>
+            <br>
+            <$vars
+                ThisInvoice={{$:/settings/Global!!selected_invoice}}
+            >
+                ''Invoice Date:''
+                <$view
+                    index='day'
+                />
+                <$view
+                    index='month'
+                />
+                <$view
+                    index='year'
+                />
+            </$vars>
+        </div>
+    </$tiddler>
+<$vars>

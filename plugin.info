@@ -1,0 +1,10 @@
+{
+  "title": "$:/plugins/OokTech/InvoiceCreator",
+  "description": "A tool for creating invoices using tiddlywiki",
+  "author": "inmysocks",
+  "version": "0.0.4",
+  "core-version": ">=5.1.8",
+  "source": "",
+  "plugin-type": "plugin",
+  "list": "Settings"
+}

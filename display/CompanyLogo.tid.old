@@ -1,0 +1,8 @@
+tags: [[Section Display]]
+section_name: Company Logo
+title: $:/plugins/OokTech/InvoiceCreator/display/CompanyLogo
+type: text/vnd.tiddlywiki
+
+<div style='float:right;position:relative;margin-top:-75px'>
+<$image source='PossibleLogo.png' width=100 heigh=100/>
+</div>

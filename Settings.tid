@@ -1,0 +1,290 @@
+caption: Settings
+tags: $:/tags/SideBar
+title: $:/plugins/OokTech/InvoiceCreator/Settings
+type: text/vnd.tiddlywiki
+
+\define thisUpdateTotals()
+<$button>
+    Update Totals
+    <$action-prodfield2
+        $filter='[tag[Invoice Item Data]]'
+        $prodfield=quantity
+        $prodfield2=unit_price
+        $storefield=total
+        $defaultvalue=0
+    />
+    <$action-sumfield
+        $filter='[tag[Invoice Item Data]suffix<ThisInvoice>use[true]]'
+        $sumfield=total
+        $tiddler="""$:/data/Invoice/$(ThisInvoice)$"""
+        $index=bill_total
+        $defaultvalue=0
+    />
+</$button>
+\end
+
+\define thisMakePreview()
+<$tiddler
+    tiddler=<<InvoiceDataTiddler>>
+>
+    <table
+        style='width:100%'
+    >
+        <tr>
+            <th>
+                Order
+            </th>
+            <th>
+                Section Name
+            </th>
+            <th>
+                Move Section
+            </th>
+        </tr>
+        <$list
+            filter="[list[##section_order]]"
+            variable=thisSection
+        >
+            <tr>
+                <td>
+                    <$count
+                        filter='[list[##section_order]allbefore<thisSection>][[dummy]]'
+                    />
+                </td>
+                <td>
+                    <$view
+                        tiddler=<<thisSection>>
+                        field='section_name'
+                    />
+                </td>
+                <td>
+                    <$button
+                        class="tc-btn-invisible tc-btn-mini"
+                    >
+                        {{$:/core/images/chevron-up}}
+                        <$action-listops
+                            $tiddler=<<InvoiceDataTiddler>>
+                            $index=section_order
+                            $subfilter='[list[##section_order]move:-1<thisSection>]'
+                        />
+                    </$button>
+                    <$button
+                        class="tc-btn-invisible tc-btn-mini"
+                    >
+                        {{$:/core/images/chevron-down}}
+                        <$action-listops
+                            $tiddler=<<InvoiceDataTiddler>>
+                            $index=section_order
+                            $subfilter='[list[##section_order]move<thisSection>]'
+                        />
+                    </$button>
+                </td>
+            </tr>
+        </$list>
+    </table>
+</$tiddler>
+\end
+
+\define thisSetCurrency()
+Currency Unit:
+<$select
+    tiddler="""$:/data/Invoice/$(ThisInvoice)$"""
+    index='selected_currency'
+>
+    <option
+        value=''
+    >
+        --
+    </option>
+    <option>
+        $
+    </option>
+    <option>
+        €
+    </option>
+    <option>
+        £
+    </option>
+    <option>
+        ¥
+    </option>
+</$select>
+\end
+
+\define thisSetPageSize()
+Page Size:
+<$select
+    tiddler="""$:/data/Invoice/$(ThisInvoice)$"""
+    index='page_size'
+>
+    <option
+        value=''
+    >
+        --
+    </option>
+    <option>
+        Letter
+    </option>
+    <option>
+        A4
+    </option>
+</$select>
+\end
+
+\define SaveInvoiceCopy()
+<$wikify
+    name=InvoiceContent
+    text={{$:/plugins/OokTech/InvoiceCreator/Print Version}}
+    output=html
+>
+    <$button>
+        Save Copy
+        <$action-setfield
+            $tiddler=<<ThisInvoice>>
+            text=<<InvoiceContent>>
+            tags="""[[Saved Invoice]]"""
+        />
+    </$button>
+</$wikify>
+\end
+
+<div
+    style='color:black;'
+>
+    <$vars
+        ThisInvoice={{$:/settings/Global!!selected_invoice}}
+    >
+        <table
+            style='width:100%'
+        >
+            <tr>
+                <th>
+                    <$select
+                        tiddler='$:/settings/Global'
+                        field='selected_invoice'
+                        style='color:black;'
+                    >
+                        <option
+                            value=''
+                        >
+                            //New Invoice//
+                        </option>
+                        <$list
+                            filter='[prefix[$:/data/Invoice/]]'
+                        >
+                            <option>
+                                <$view
+                                    field='invoice_name'
+                                />
+                            </option>
+                        </$list>
+                    </$select>
+                </th>
+                <td>
+                    <$list
+                        filter='[[$:/settings/Global]!has[selected_invoice]]'
+                        variable=dummy
+                    >
+                        <$edit-text
+                            tiddler='$:/temp/InvoiceCreator/NewInvoice'
+                            placeholder='Invoice Name'
+                            field='name'
+                            class='tc-edit-texteditor'
+                            style='width:100%'
+                        />
+                    </$list>
+                </td>
+                <td>
+                    <$list
+                        filter='[[$:/settings/Global]!has[selected_invoice]]'
+                        variable=dummy
+                    >
+                        <$button>
+                            Create Invoice
+                            <$list
+                                filter='[[$:/data/Invoice/]addsuffix{$:/temp/InvoiceCreator/NewInvoice!!name}]'
+                            >
+                                <$action-setfield
+                                    invoice_name={{$:/temp/InvoiceCreator/NewInvoice!!name}}
+                                />
+                                <$action-setfield
+                                    $tiddler='$:/settings/Global'
+                                    selected_invoice={{$:/temp/InvoiceCreator/NewInvoice!!name}}
+                                />
+                                <$list
+                                    filter='[[$:/data/Invoice/]addsuffix{$:/temp/InvoiceCreator/NewInvoice!!name}]'
+                                    variable=InvoiceDataName
+                                >
+                                    <$action-listops
+                                        $tiddler=<<InvoiceDataName>>
+                                        $filter='[all[tiddlers+shadows]removeprefix[$:/plugins/OokTech/InvoiceCreator/settings/tabs]addprefix[$:/plugins/OokTech/InvoiceCreator/display]]'
+                                        $index=section_order
+                                    />
+                                </$list>
+                                <$action-setfield
+                                    $tiddler='$:/temp/InvoiceCreator/NewInvoice'
+                                    name=''
+                                />
+                            </$list>
+                        </$button>
+                    </$list>
+                </td>
+            </tr>
+            <$list
+                filter='[[$:/settings/Global]has[selected_invoice]]'
+                variable=dummy
+            >
+                <tr>
+                    <td>
+                        <<thisSetPageSize>>
+                    </td>
+                    <td>
+                        <<thisSetCurrency>>
+                    </td>
+                    <td>
+                        <<thisUpdateTotals>>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>
+                        <<SaveInvoiceCopy>>
+                    </td>
+                    <td>
+                        <$tiddler
+                            tiddler='$:/plugins/OokTech/InvoiceCreator/Print Version'
+                        >
+                            <$button
+                                message="tm-open-window"
+                            >
+                                Print
+                            </$button>
+                        </$tiddler>
+                    </td>
+                    <td>
+                        <$button>
+                            View
+                            <$action-navigate
+                                $to={{$:/settings/Global!!selected_invoice}}
+                            />
+                        </$button>
+                    </td>
+                </tr>
+            </$list>
+        </table>
+
+        <$list
+            filter='[[$:/settings/Global]has[selected_invoice]]'
+            variable=dummy
+            emptyMessage="Either select or create a new invoice to start"
+        >
+
+            <<tabs "[all[tiddlers+shadows]prefix[$:/plugins/OokTech/InvoiceCreator/settings/tabs/]!show[false]]">>
+
+            <div
+                style='max-width:689px;margin-left:20px;color:black;'
+            >
+                <<thisMakePreview>>
+            </div>
+        </$list>
+    </$vars>
+</div>

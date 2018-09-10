@@ -1,0 +1,152 @@
+caption: Company Address
+section_name: Company Address
+tags:
+title: $:/plugins/OokTech/InvoiceCreator/settings/tabs/CompanyAddress
+type: text/vnd.tiddlywiki
+
+\define AddressTiddlerName() $:/data/CompanyInfo/$(AddressName)$
+
+\define thisSelectedOption() $:/data/Invoice/$(ThisInvoice)$##company_info
+
+<$vars
+    ThisInvoice={{$:/settings/Global!!selected_invoice}}
+>
+    <$tiddler
+        tiddler=<<InvoiceDataTiddler>>
+    >
+        ''Select Customer:''
+        <$select
+            tiddler=<<currentTiddler>>
+            index='bill_to'
+        >
+            <option
+                value=''
+            >
+                //Add New Customer//
+            </option>
+            <$list
+                filter='[prefix[$:/data/CompanyInfo/]]'
+            >
+                <option
+                    value=<<currentTiddler>>
+                >
+                    <$view
+                        field='name'
+                    >
+                        <$view
+                            field='title'
+                        />
+                    </$view>
+                </option>
+            </$list>
+        </$select>
+        <$reveal
+            state=<<thisSelectedOption>>
+            type='match'
+            text=''
+        >
+            <$list
+                filter='[[$:/data/Invoice/]addsuffix{$:/settings/Global!!selected_invoice}getindex[company_info]]'
+            >
+                <h2>
+                    Company Address
+                </h2>
+                <div
+                    style='border:solid black; background:white;padding-left:2em;padding-right:2em'
+                >
+
+                    {{!!street_address}},<br>
+                    {{!!city}}, {{!!state}} {{!!zip_code}}
+                </div>
+            </$list>
+        </$reveal>
+    </$tiddler>
+    <$reveal
+        state=<<thisSelectedOption>>
+        type='nomatch'
+        text=''
+    >
+        <table
+            style='width:100%'
+        >
+            <tr>
+                <th>
+                    Address Name
+                </th>
+                <td>
+                    <$edit-text
+                        field='address_name'
+                        class='tc-edit-texteditor'
+                    />
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Street Address
+                </th>
+                <td>
+                    <$edit-text
+                        field='street_address'
+                        class='tc-edit-texteditor'
+                    />
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    City
+                </th>
+                <td>
+                    <$edit-text
+                        field='city'
+                        class='tc-edit-texteditor'
+                    />
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    State
+                </th>
+                <td>
+                    <$edit-text
+                        field='state'
+                        class='tc-edit-texteditor'
+                    />
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Zip Code
+                </th>
+                <td>
+                    <$edit-text
+                        field='zip_code'
+                        class='tc-edit-texteditor'
+                    />
+                </td>
+            </tr>
+        </table>
+        <$set
+            name=AddressName
+            value={{!!address_name}}
+        >
+            <$button>
+                Add Customer
+                <$action-setfield
+                    $tiddler=<<AddressTiddlerName>>
+                    address_name={{!!address_name}}
+                    street_address={{!!street_address}}
+                    city={{!!city}}
+                    state={{!!state}}
+                    zip_code={{!!zip_code}}
+                />
+                <$action-setfield
+                    address_name=''
+                    street_address=''
+                    city=''
+                    state=''
+                    zip_code=''
+                />
+            </$button>
+        </$set>
+    </$reveal>
+</$vars>

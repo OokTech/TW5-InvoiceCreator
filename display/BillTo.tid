@@ -1,0 +1,16 @@
+tags: [[Section Display]]
+section_name: Bill To
+title: $:/plugins/OokTech/InvoiceCreator/display/BillTo
+type: text/vnd.tiddlywiki
+
+!!''Bill To''
+
+---
+
+<$list
+    filter='[[$:/data/Invoice/]addsuffix{$:/settings/Global!!selected_invoice}getindex[bill_to]]'
+>
+    ''{{!!name}}''<br>
+    {{!!address}},<br>
+    {{!!city}}, {{!!state}} {{!!zip_code}}
+</$list>

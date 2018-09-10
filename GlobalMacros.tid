@@ -1,0 +1,9 @@
+tags: $:/tags/Macro
+title: $:/plugins/OokTech/InvoiceCreator/GlobalMacros
+type: text/vnd.tiddlywiki
+
+\define CurrencyUnit()
+<$list filter='[[$:/data/Invoice/]addsuffix{$:/settings/Global!!selected_invoice}getindex[selected_currency]]'><$view field='title'/></$list>
+\end
+
+\define InvoiceDataTiddler() $:/data/Invoice/$(ThisInvoice)$

@@ -1,0 +1,49 @@
+tags: [[Section Display]]
+section_name: Company Information
+title: $:/plugins/OokTech/InvoiceCreator/display/CompanyInfo
+type: text/vnd.tiddlywiki
+
+!!''Payable on submission to''
+<hr>
+
+<$vars
+    ThisInvoice={{$:/settings/Global!!selected_invoice}}
+>
+    <$list
+        filter='[[$:/data/Invoice/]addsuffix<ThisInvoice>getindex[company_address]]'
+    >
+        <span
+            style='font-size:17px;font-weight:bold;'
+        >
+            <$view
+                field='company_name'
+            />
+        </span>
+        <br>
+        {{!!street_address}},<br>
+        {{!!city}}, {{!!state}} {{!!zip_code}}
+        <div
+            style='float:right;position:relative;margin-top:-45px'
+        >
+            <$image
+                source={{!!logo}}
+                width=100
+            />
+        </div>
+        <br>
+        <br>
+        ''EIN:'' {{!!ein}}<br><br>
+    </$list>
+    <$list
+        filter='[[$:/data/Invoice/]addsuffix<ThisInvoice>getindex[payment_info]]'
+    >
+
+        __''Bank Information''__
+        <br>
+
+        {{!!bank}}<br>
+        Account Number: {{!!account_number}}<br>
+        Routing Number: {{!!routing_number}}
+
+    </$list>
+</$vars>

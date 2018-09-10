@@ -1,0 +1,22 @@
+tags: [[Section Display]]
+section_name: After Bit
+title: $:/plugins/OokTech/InvoiceCreator/display/AfterBit
+type: text/vnd.tiddlywiki
+
+<$vars
+    ThisInvoice={{$:/settings/Global!!selected_invoice}}
+>
+    <$list
+        filter='[[$:/data/Invoice/]addsuffix<ThisInvoice>]'
+    >
+        <$list
+            filter='[<InvoiceDataTiddler>getindex[AfterBit]]'
+            emptyMessage='This is empty'
+        >
+            <$transclude
+                tiddler=<<InvoiceDataTiddler>>
+                index='AfterBit'
+            />
+        </$list>
+    </$list>
+</$vars>

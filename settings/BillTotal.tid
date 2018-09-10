@@ -1,0 +1,19 @@
+caption: Bill Total
+section_name: Bill Total
+tags:
+title: $:/plugins/OokTech/InvoiceCreator/settings/tabs/BillTotal
+type: text/vnd.tiddlywiki
+
+This is updated by clicking the `Update Totals` button above. It is based on the content of the `Itemized List` tab.
+
+<div
+    style='border:solid black; background:white;padding-left:2em;padding-right:2em'
+>
+    <$list
+        filter='[[$:/data/Invoice/]addsuffix<ThisInvoice>getindex[bill_total]]'
+        variable=BillTotal
+        emptyMessage='Click the update total button first!'
+    >
+        ''Invoice Total:<span style='float:right;padding-right:10px'><<CurrencyUnit>><<BillTotal>></span>''
+    </$list>
+</div>

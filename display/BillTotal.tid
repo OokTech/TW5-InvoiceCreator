@@ -1,0 +1,14 @@
+section_name: Bill Total
+tags: [[Section Display]]
+title: $:/plugins/OokTech/InvoiceCreator/display/BillTotal
+type: text/vnd.tiddlywiki
+
+    <$list
+        filter="""[[$:/data/Invoice/]addsuffix{$:/settings/Global!!selected_invoice}getindex[bill_total]]"""
+        variable=BillTotal
+        emptyMessage="""
+        ''Invoice Total:<span style='float:right;padding-right:10px'><<CurrencyUnit>>0</span>''
+        """
+    >
+        ''Invoice Total:<span style='float:right;padding-right:10px'><<CurrencyUnit>><<BillTotal>></span>''
+    </$list>

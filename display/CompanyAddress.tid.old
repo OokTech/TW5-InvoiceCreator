@@ -1,0 +1,14 @@
+tags: [[Section Display]]
+title: $:/plugins/OokTech/InvoiceCreator/display/CompanyAddress
+type: text/vnd.tiddlywiki
+
+<$vars
+    ThisInvoice={{$:/settings/Global!!selected_invoice}}
+>
+    <$list
+        filter='[[$:/data/Invoice/]addsuffix<ThisInvoice>getindex[company_name]]'
+    >
+        {{!!street_address}},<br>
+        {{!!city}}, {{!!state}} {{!!zip_code}}
+    </$list>
+</$vars>

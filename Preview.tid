@@ -1,0 +1,125 @@
+caption: Preview
+tags: $:/tags/SideBar
+title: $:/plugins/OokTech/InvoiceCreator/Preview
+type: text/vnd.tiddlywiki
+
+\define listUnusedSections()
+Unused sections:
+<br>
+<br>
+<$set
+    filter='[list[$:/data/Invoice/$(ThisInvoice)$##section_order]]'
+    name=UsedSections
+>
+    <$list
+        filter='[all[tiddlers+shadows]removeprefix[$:/plugins/OokTech/InvoiceCreator/settings/tabs]addprefix[$:/plugins/OokTech/InvoiceCreator/display]]+[remove<UsedSections>]'
+        variable=ThisSection
+    >
+        <$button>
+            Add Section
+            <$action-listops
+                $tiddler=<<InvoiceDataTiddler>>
+                $index=section_order
+                $subfilter='+[append<ThisSection>]'
+            />
+        </$button>
+        <$view
+            tiddler=<<ThisSection>>
+            field='section_name'
+        >
+            <$view
+                tiddler=<<ThisSection>>
+                field='title'
+            />
+        </$view>
+        <br>
+    </$list>
+</$set>
+\end
+
+\define thisMakePreview()
+<$list
+    filter="""[list[$:/data/Invoice/$(ThisInvoice)$##section_order]]"""
+    variable=ThisSection
+>
+    <div
+        class=preview-div-reorder
+    >
+        <div
+            class=preview-div-reorder-inner
+        >
+            <$tiddler
+                tiddler=<<InvoiceDataTiddler>>
+            >
+                <$button
+                    class="tc-btn-invisible tc-btn-mini"
+                    tooltip='Move Section Up'
+                >
+                    {{$:/core/images/chevron-up}}
+                    <$list
+                        filter='[list[$:/data/Invoice/$(ThisInvoice)$##section_order]first[]!field:title<ThisSection>]'
+                        variable=dummy
+                    >
+                        <$action-listops
+                            $tiddler=<<InvoiceDataTiddler>>
+                            $index=section_order
+                            $subfilter='[list[##section_order]move:-1<ThisSection>]'
+                        />
+                    </$list>
+                </$button>
+                <$button
+                    class="tc-btn-invisible tc-btn-mini"
+                    tooltip='Move Section Down'
+                >
+                    {{$:/core/images/chevron-down}}
+                    <$action-listops
+                        $tiddler=<<InvoiceDataTiddler>>
+                        $index=section_order
+                        $subfilter='[list[##section_order]move<ThisSection>]'
+                    />
+                </$button>
+                <$button
+                    class="tc-btn-invisible tc-btn-mini"
+                    tooltip='Remove Section'
+                >
+                    {{$:/core/images/close-button}}
+                    <$action-listops
+                        $tiddler=<<InvoiceDataTiddler>>
+                        $index=section_order
+                        $filter='[list[##section_order]remove<ThisSection>]'
+                    />
+                </$button>
+                Order:''
+                <$count
+                    filter='[list[##section_order]allbefore<ThisSection>][[dummy]]'
+                />''
+            </$tiddler>
+            Section Name:
+            ''__
+            <$view
+                tiddler=<<ThisSection>>
+                field='section_name'
+            />
+            __''
+        </div>
+        <$transclude
+            tiddler=<<ThisSection>>
+            mode=block
+        />
+    </div>
+</$list>
+\end
+
+<$vars
+    ThisInvoice={{$:/settings/Global!!selected_invoice}}
+>
+    <div
+        style='margin-left:20px;background-color:white;color:black'
+    >
+
+            <<thisMakePreview>>
+    </div>
+
+    <<listUnusedSections>>
+
+</$vars>

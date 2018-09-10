@@ -1,0 +1,19 @@
+caption: After Bit
+section_name: After Bit
+tags:
+title: $:/plugins/OokTech/InvoiceCreator/settings/tabs/AfterBit
+type: text/vnd.tiddlywiki
+
+<$vars
+    ThisInvoice={{$:/settings/Global!!selected_invoice}}
+>
+    This is a chunk of formatted text that you can put into your invoice.
+    <$tiddler
+        tiddler=<<InvoiceDataTiddler>>
+    >
+        <$edit-text
+            index=AfterBit
+            class='tc-edit-texteditor'
+        />
+    </$tiddler>
+</$vars>
